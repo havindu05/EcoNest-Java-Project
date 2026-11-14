@@ -16,11 +16,13 @@ public class MainDashboardView extends JFrame {
 
     public MainDashboardView() {
         setTitle("EcoNest - Home & Garden Retail Management System");
-        setSize(1150, 700);
+        setSize(1250, 780);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         setContentPane(panel1);
+
+        applyModernSidebarTheme();
 
         cardLayout = (CardLayout) contentAreaPanel.getLayout();
 
@@ -37,9 +39,37 @@ public class MainDashboardView extends JFrame {
         monthlyReportsButton.addActionListener(e -> cardLayout.show(contentAreaPanel, "REPORTS"));
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new MainDashboardView().setVisible(true);
-        });
+    private void applyModernSidebarTheme() {
+        Color sidebarBg = new Color(27, 77, 62);
+        Color hoverBg = new Color(46, 125, 50);
+        Font navFont = new Font("Segoe UI", Font.BOLD, 14);
+
+        JButton[] navButtons = {
+                productsStockButton, clientsDirectoryButton,
+                clientOrdersButton, deliveryAgentsButton, monthlyReportsButton
+        };
+
+        for (JButton btn : navButtons) {
+            if (btn != null) {
+
+                btn.setOpaque(true);
+                btn.setContentAreaFilled(true);
+
+                btn.setBackground(sidebarBg);
+                btn.setForeground(Color.WHITE);
+                btn.setFont(navFont);
+                btn.setFocusPainted(false);
+                btn.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+
+                btn.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        btn.setBackground(hoverBg);
+                    }
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        btn.setBackground(sidebarBg);
+                    }
+                });
+            }
+        }
     }
 }

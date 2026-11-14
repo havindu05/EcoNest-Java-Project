@@ -21,13 +21,28 @@ public class ClientsPanel {
     public ClientsPanel() {
         loadClientCategories();
         loadClientData();
-
-        btnAdd.setBackground(new Color(40, 120, 50));
-        btnAdd.setForeground(Color.WHITE);
-        btnRemove.setBackground(new Color(180, 50, 50));
-        btnRemove.setForeground(Color.WHITE);
+        styleComponents();
 
         btnAdd.addActionListener(e -> addClientToDatabase());
+    }
+
+    private void styleComponents() {
+        Font btnFont = new Font("Segoe UI", Font.BOLD, 13);
+        btnAdd.setBackground(new Color(46, 125, 50));
+        btnAdd.setForeground(Color.WHITE);
+        btnAdd.setFont(btnFont);
+        btnAdd.setFocusPainted(false);
+
+        btnRemove.setBackground(new Color(180, 50, 50));
+        btnRemove.setForeground(Color.WHITE);
+        btnRemove.setFont(btnFont);
+        btnRemove.setFocusPainted(false);
+
+        tableClients.setRowHeight(28);
+        tableClients.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tableClients.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+        tableClients.getTableHeader().setBackground(new Color(27, 77, 62));
+        tableClients.getTableHeader().setForeground(Color.WHITE);
     }
 
     private void loadClientCategories() {

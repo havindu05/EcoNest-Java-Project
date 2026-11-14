@@ -21,11 +21,22 @@ public class AgentsPanel {
     public AgentsPanel() {
         loadAgentDropdowns();
         loadAgentData();
-
-        btnAdd.setBackground(new Color(40, 120, 50));
-        btnAdd.setForeground(Color.WHITE);
+        styleComponents();
 
         btnAdd.addActionListener(e -> addAgentToDatabase());
+    }
+
+    private void styleComponents() {
+        btnAdd.setBackground(new Color(46, 125, 50));
+        btnAdd.setForeground(Color.WHITE);
+        btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btnAdd.setFocusPainted(false);
+
+        tableAgents.setRowHeight(28);
+        tableAgents.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tableAgents.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+        tableAgents.getTableHeader().setBackground(new Color(27, 77, 62));
+        tableAgents.getTableHeader().setForeground(Color.WHITE);
     }
 
     private void loadAgentDropdowns() {

@@ -23,13 +23,29 @@ public class ProductsPanel {
         loadCategories();
         loadEcoRatings();
         loadTableData();
-
-        btnAdd.setBackground(new Color(40, 120, 50));
-        btnAdd.setForeground(Color.WHITE);
-        btnRemove.setBackground(new Color(180, 50, 50));
-        btnRemove.setForeground(Color.WHITE);
+        styleComponents();
 
         btnAdd.addActionListener(e -> addProductToDatabase());
+    }
+
+    private void styleComponents() {
+        Font btnFont = new Font("Segoe UI", Font.BOLD, 13);
+        btnAdd.setBackground(new Color(46, 125, 50));
+        btnAdd.setForeground(Color.WHITE);
+        btnAdd.setFont(btnFont);
+        btnAdd.setFocusPainted(false);
+
+        btnRemove.setBackground(new Color(180, 50, 50));
+        btnRemove.setForeground(Color.WHITE);
+        btnRemove.setFont(btnFont);
+        btnRemove.setFocusPainted(false);
+
+        // Table Pro Styling
+        tableProducts.setRowHeight(28);
+        tableProducts.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tableProducts.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+        tableProducts.getTableHeader().setBackground(new Color(27, 77, 62));
+        tableProducts.getTableHeader().setForeground(Color.WHITE);
     }
 
     private void loadCategories() {
@@ -71,9 +87,9 @@ public class ProductsPanel {
                 int stock = rs.getInt("stock_qty");
                 int reorder = rs.getInt("reorder_level");
 
-                String status = (stock <= reorder) ? "⚠️ LOW STOCK" : "In Stock";
+                String status = (stock <= reorder) ? "LOW STOCK" : "In Stock";
 
-                model.addRow(new Object[]{id, name, category, price, ecoRating + " ⭐", stock, status});
+                model.addRow(new Object[]{id, name, category, price, ecoRating + " ", stock, status});
             }
             tableProducts.setModel(model);
 
