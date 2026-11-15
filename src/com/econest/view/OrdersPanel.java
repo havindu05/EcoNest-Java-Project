@@ -92,7 +92,6 @@ public class OrdersPanel {
 
                 double totalAmount = price * qty;
 
-                // Updated table name to 'orders'
                 String insertQuery = "INSERT INTO orders (client_id, product_id, quantity, total_amount, status) VALUES (?, ?, ?, ?, 'Dispatched')";
                 try (PreparedStatement pstmtInsert = conn.prepareStatement(insertQuery)) {
                     pstmtInsert.setInt(1, clientId);
