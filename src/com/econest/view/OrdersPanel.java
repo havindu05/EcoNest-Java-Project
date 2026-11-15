@@ -13,7 +13,6 @@ public class OrdersPanel {
     private JTextField txtProductId;
     private JTextField txtQty;
     private JButton btnOrder;
-    private JTextField lblIdDetails;
     private JTable tableOrders;
 
     public OrdersPanel() {
@@ -21,6 +20,9 @@ public class OrdersPanel {
 
         btnOrder.setBackground(new Color(40, 120, 50));
         btnOrder.setForeground(Color.WHITE);
+        btnOrder.setOpaque(true);
+        btnOrder.setContentAreaFilled(true);
+        btnOrder.setBorderPainted(false);
 
         btnOrder.addActionListener(e -> createOrderAndDispatch());
     }
@@ -29,7 +31,6 @@ public class OrdersPanel {
         String[] columns = {"Order ID", "Client Name", "Total Amount (LKR)", "Status"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
 
-        // Updated table name to 'orders' matching your DB schema
         String query = "SELECT o.order_id AS id, c.name AS client_name, o.total_amount, o.status " +
                 "FROM orders o JOIN clients c ON o.client_id = c.client_id";
 

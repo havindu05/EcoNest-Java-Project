@@ -31,6 +31,10 @@ public class AgentsPanel {
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 13));
         btnAdd.setFocusPainted(false);
+        btnAdd.setOpaque(true);
+        btnAdd.setContentAreaFilled(true);
+        btnAdd.setBorderPainted(false);
+
 
         tableAgents.setRowHeight(28);
         tableAgents.setFont(new Font("Segoe UI", Font.PLAIN, 13));

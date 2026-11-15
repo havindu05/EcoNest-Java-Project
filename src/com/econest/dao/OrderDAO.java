@@ -34,7 +34,7 @@ public class OrderDAO {
 
     public boolean placeOrder(int clientId, int productId, int qty) {
         try (Connection connection = DBConnection.getConnection()) {
-            //Get product price
+
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT price FROM products WHERE product_id = ?");
             preparedStatement.setInt(1, productId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -43,7 +43,6 @@ public class OrderDAO {
             double price = resultSet.getDouble("price");
             double total = price * qty;
 
-            //Insert into orders table
             PreparedStatement psOrder = connection.prepareStatement(
                     "INSERT INTO orders (client_id, order_date, total_amount) VALUES (?, CURDATE(), ?)",
                     Statement.RETURN_GENERATED_KEYS
@@ -65,7 +64,6 @@ public class OrderDAO {
                 psItem.executeUpdate();
             }
 
-            //Send email notification safely
             PreparedStatement psClient = connection.prepareStatement("SELECT email FROM clients WHERE client_id = ?");
             psClient.setInt(1, clientId);
             ResultSet resultSet1 = psClient.executeQuery();

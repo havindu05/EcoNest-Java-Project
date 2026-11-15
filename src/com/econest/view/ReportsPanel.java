@@ -17,6 +17,9 @@ public class ReportsPanel {
 
         btnGenerate.setBackground(new Color(40, 120, 50));
         btnGenerate.setForeground(Color.WHITE);
+        btnGenerate.setOpaque(true);
+        btnGenerate.setContentAreaFilled(true);
+        btnGenerate.setBorderPainted(false);
 
         generateLiveReport();
         btnGenerate.addActionListener(e -> generateLiveReport());
@@ -41,7 +44,7 @@ public class ReportsPanel {
             boolean hasLowStock = false;
             while (rsStock.next()) {
                 hasLowStock = true;
-                lowStockAlerts.append("   ⚠️ [ALERT] ")
+                lowStockAlerts.append("  [ALERT] ")
                         .append(rsStock.getString("name"))
                         .append(" (Stock: ").append(rsStock.getInt("stock_qty"))
                         .append(" | Reorder Level: ").append(rsStock.getInt("reorder_level"))
@@ -49,7 +52,7 @@ public class ReportsPanel {
             }
 
             if (!hasLowStock) {
-                lowStockAlerts.append("   ✅ All inventory stock levels are optimal.\n");
+                lowStockAlerts.append("  All inventory stock levels are optimal.\n");
             }
 
             String reportText =

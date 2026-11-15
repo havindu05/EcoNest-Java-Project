@@ -24,19 +24,31 @@ public class ClientsPanel {
         styleComponents();
 
         btnAdd.addActionListener(e -> addClientToDatabase());
+        btnRemove.addActionListener(e -> removeSelectedClient());
     }
 
     private void styleComponents() {
         Font btnFont = new Font("Segoe UI", Font.BOLD, 13);
+
+        btnAdd.setOpaque(true);
+        btnAdd.setContentAreaFilled(true);
         btnAdd.setBackground(new Color(46, 125, 50));
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setFont(btnFont);
         btnAdd.setFocusPainted(false);
+        btnAdd.setOpaque(true);
+        btnAdd.setContentAreaFilled(true);
+        btnAdd.setBorderPainted(false);
 
+        btnRemove.setOpaque(true);
+        btnRemove.setContentAreaFilled(true);
         btnRemove.setBackground(new Color(180, 50, 50));
         btnRemove.setForeground(Color.WHITE);
         btnRemove.setFont(btnFont);
         btnRemove.setFocusPainted(false);
+        btnRemove.setOpaque(true);
+        btnRemove.setContentAreaFilled(true);
+        btnRemove.setBorderPainted(false);
 
         tableClients.setRowHeight(28);
         tableClients.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -113,6 +125,39 @@ public class ClientsPanel {
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(panel1, "Database Error: " + ex.getMessage());
+        }
+    }
+
+    private void removeSelectedClient() {
+        int selectedRow = tableClients.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(panel1, "Please select a client from the table to remove!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int clientId = Integer.parseInt(tableClients.getValueAt(selectedRow, 0).toString());
+        String clientName = tableClients.getValueAt(selectedRow, 1).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(panel1,
+                "Are you sure you want to delete client '" + clientName + "'?",
+                "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            String query = "DELETE FROM clients WHERE client_id = ?";
+
+            try (Connection conn = DBConnection.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+                pstmt.setInt(1, clientId);
+                pstmt.executeUpdate();
+
+                JOptionPane.showMessageDialog(panel1, "Client Removed Successfully!");
+                loadClientData();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(panel1, "Cannot delete client (they may have existing orders): " + ex.getMessage(), "Delete Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

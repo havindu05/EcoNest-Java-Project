@@ -26,21 +26,32 @@ public class ProductsPanel {
         styleComponents();
 
         btnAdd.addActionListener(e -> addProductToDatabase());
+        btnRemove.addActionListener(e -> removeSelectedProduct());
     }
 
     private void styleComponents() {
         Font btnFont = new Font("Segoe UI", Font.BOLD, 13);
+
+        btnAdd.setOpaque(true);
+        btnAdd.setContentAreaFilled(true);
         btnAdd.setBackground(new Color(46, 125, 50));
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setFont(btnFont);
         btnAdd.setFocusPainted(false);
+        btnAdd.setOpaque(true);
+        btnAdd.setContentAreaFilled(true);
+        btnAdd.setBorderPainted(false);
 
+        btnRemove.setOpaque(true);
+        btnRemove.setContentAreaFilled(true);
         btnRemove.setBackground(new Color(180, 50, 50));
         btnRemove.setForeground(Color.WHITE);
         btnRemove.setFont(btnFont);
         btnRemove.setFocusPainted(false);
+        btnRemove.setOpaque(true);
+        btnRemove.setContentAreaFilled(true);
+        btnRemove.setBorderPainted(false);
 
-        // Table Pro Styling
         tableProducts.setRowHeight(28);
         tableProducts.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tableProducts.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -137,12 +148,44 @@ public class ProductsPanel {
                 txtQty.setText("");
                 txtReorder.setText("");
                 loadTableData();
-
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(panel1, "Please enter valid numeric values for Price/Stock!", "Format Error", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(panel1, "Database Insert Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void removeSelectedProduct() {
+        int selectedRow = tableProducts.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(panel1, "Please select a product from the table to remove!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int productId = Integer.parseInt(tableProducts.getValueAt(selectedRow, 0).toString());
+        String productName = tableProducts.getValueAt(selectedRow, 1).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(panel1,
+                "Are you sure you want to delete '" + productName + "'?",
+                "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            String query = "DELETE FROM products WHERE product_id = ?";
+
+            try (Connection conn = DBConnection.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+                pstmt.setInt(1, productId);
+                pstmt.executeUpdate();
+
+                JOptionPane.showMessageDialog(panel1, "Product Removed Successfully!");
+                loadTableData();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(panel1, "Cannot delete product (it may be linked to existing orders): " + ex.getMessage(), "Delete Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
